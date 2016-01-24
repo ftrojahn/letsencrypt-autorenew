@@ -16,5 +16,6 @@ nano /PathToLetsencrypt/letsencrypt/cron.sh
 chmod +x /PathToLetsencrypt/letsencrypt/cron.sh
 
 4) Cron exemple: 15 Jan, 15 April, 15 July, 15 Oct 
+
 "* * 15 4,7,10,1 * /PathToLetsencrypt/letsencrypt/cron.sh >> /PathToLetsencrypt/letsencrypt/cron.log"
 
