@@ -26,12 +26,11 @@ do
 	path=${DOMAINS[$domain]};
 
 	echo -e "\nDomain $i : \n############################################"
-	#run command
-	result=$(./letsencrypt-auto --config ${CONFIG_PATH} -d ${domain} --authenticator webroot --webroot-path ${path} certonly)
+	#display command before to register cron
+	#echo "sudo -H ../letsencrypt-auto --config ${CONFIG_PATH} -d ${domain} --authenticator webroot --webroot-path ${path} certonly";
+	#run command sudo 
+	result=$(sudo -H ./letsencrypt-auto --config ${CONFIG_PATH} -d ${domain} --authenticator webroot --webroot-path ${path} certonly)
 	echo "${result}"
-
-	#display command
-	#echo "./letsencrypt-auto --config ${CONFIG_PATH} -d ${domain} --authenticator webroot --webroot-path ${path} certonly";
 done
 
 echo "Reload Apache"
