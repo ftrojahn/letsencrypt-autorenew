@@ -10,7 +10,7 @@ echo "
 # We display date
 date
 
-cd LETSENCRYPT_DIRECTORY
+cd $LETSENCRYPT_DIRECTORY
 
 #array domains
 declare -A DOMAINS
