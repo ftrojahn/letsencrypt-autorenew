@@ -2,9 +2,21 @@
 Bash script for auto renew let's encrypt ssl certificates
 
 As you may know all certificates are for 3 months.
-So you need to renew them everery three monthes. Ouch
+So you need to renew them every three monthes. Ouch
 
 Here a way to automate it.
+
+This fork is for hosts with VIRTUALMIN installed (http://www.virtualmin.com).
+
+It checks if "www.domain.tld" exists via dns lookup and request it as alternate dns name, if reachable.
+
+* possible arguments:
+
+  * (domain here) - only special virtualmin domain(s), not all
+
+  * dryrun - just test
+
+  * force (domain here) - renew cert even if not needed, needs domain name
 
 1) Configure config file
 nano /PathToLetsencrypt/letsencrypt/cli.ini
