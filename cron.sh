@@ -58,14 +58,14 @@ declare -A DOMAINS
 declare -A CERTS
 declare -A KEYS
 
-
-if [ -z $VIRTUALHOSTS ] ; then
-
-	#you can add more elements
-	#DOMAINS["xx.domain.tld"]="/your-special-document-root-path/public/"
-	#CERTS["xx.domain.tld"]=/etc/letsencrypt/live/xx.domain.tld/fullchain.pem 
+#you can add more elements
+#DOMAINS["xx.domain.tld"]="/your-special-document-root-path/public/"
+#CERTS["xx.domain.tld"]="/etc/letsencrypt/live/xx.domain.tld/fullchain.pem"
+#KEYS["xx.domain.tld"]="/etc/letsencrypt/live/xx.domain.tld/privkey.pem"
 
 ############ no more variable settings after this line ##################
+
+if [ -z $VIRTUALHOSTS ] ; then
 
 	VIRTUALHOSTS=`$VIRTUALMINBIN list-domains --enabled --with-feature ssl --name-only`
 fi
@@ -79,7 +79,7 @@ for i in $VIRTUALHOSTS ; do
 	if [ -z $VHOSTCERT_FILE ] ; then
 	   for j in $LETSENCRYPTDOMAINS ; do
 		if [ "$i" = "$j" ] ; then
-		   echo DEBUG: letsencrypt-domain found: $i
+		   # echo DEBUG: letsencrypt-domain found: $i
 		   VHOSTCERT_FILE=/etc/letsencrypt/live/$i/fullchain.pem 
 		fi
 	  done
@@ -89,7 +89,7 @@ for i in $VIRTUALHOSTS ; do
 	if [ -z $VHOSTKEY_FILE ] ; then
 	   for j in $LETSENCRYPTDOMAINS ; do
 		if [ "$i" = "$j" ] ; then
-		   echo DEBUG: letsencrypt-domain found: $i
+		   # echo DEBUG: letsencrypt-domain found: $i
 		   VHOSTKEY_FILE=/etc/letsencrypt/live/$i/privkey.pem 
 		fi
 	  done
