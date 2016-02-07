@@ -123,7 +123,11 @@ CERT_FILE=${CERTS[$domain]};
 KEY_FILE=${KEYS[$domain]};
 
 	if [ ! -f $CERT_FILE ] ; then
-		echo "Zertifikat $domain Datei existiert nicht: $CERT_FILE."
+		echo "Certificate file for $domain does not exist: $CERT_FILE."
+		continue
+        fi
+	if [ ! -f $KEY_FILE ] ; then
+		echo "Key file for $domain does not exist: $KEY_FILE."
 		continue
         fi
 
@@ -144,7 +148,7 @@ KEY_FILE=${KEYS[$domain]};
 			days_exp=1;
 		fi 
   if [ "$days_exp" -gt "90" ] ; then
-	echo "Zertifikat $domain ist nicht von Let's Encrypt ($days_exp days left)."
+	echo "Certificate for $domain is not from Let's Encrypt ($days_exp days left)."
  	continue
   fi 
 
