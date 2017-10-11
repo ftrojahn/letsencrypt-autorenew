@@ -258,7 +258,6 @@ KEY_FILE=${KEYS[$domain]};
 		#run command
 	        result=$(${LETSENCRYPT_cmd} ${WWWARG} ${LETSENCRYPT_options} )
 		echo "${result}"
-
 	fi
   fi
 
@@ -270,7 +269,7 @@ KEY_FILE=${KEYS[$domain]};
   dnsnames2=$( openssl x509 -in $LETSENCRYPT_path/$domain/fullchain.pem -text -noout|grep "DNS:")
   
   # copy files if needed
-  if [ $exp2 -ge $exp ] \
+  if [ $days_exp2 -ge $days_exp ] \
     && [ -n "$CERT_FILE" ] && [ -f "$CERT_FILE" ] && [ -L "$LETSENCRYPT_path/$domain/fullchain.pem" ] \
     && [ -n "$KEY_FILE" ] && [ -f "$KEY_FILE" ] && [ -L "$LETSENCRYPT_path/$domain/privkey.pem" ] ; then
   	cp -L $LETSENCRYPT_path/$domain/fullchain.pem $CERT_FILE 
