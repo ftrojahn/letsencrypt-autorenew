@@ -273,6 +273,9 @@ KEY_FILE=${KEYS[$domain]};
   if [ $days_exp2 -ge $days_exp ] \
     && [ -n "$CERT_FILE" ] && [ -L "$LETSENCRYPT_path/$domain/fullchain.pem" ] \
     && [ -n "$KEY_FILE" ] && [ -L "$LETSENCRYPT_path/$domain/privkey.pem" ] ; then
+	echo "The *new* certificate for *$domain* is *up-to-date* ($days_exp2 days left) and will be used."
+	echo "Domains: $dnsnames2 "
+
   	cp -L $LETSENCRYPT_path/$domain/fullchain.pem $CERT_FILE 
   	cp -L $LETSENCRYPT_path/$domain/privkey.pem $KEY_FILE 
   	DORELOAD=true
