@@ -3,6 +3,7 @@ LETSENCRYPT_cmd="/usr/local/bin/dehydrated -c -4 "
 LETSENCRYPT_options=" "
 LETSENCRYPT_path="/var/lib/dehydrated/certs"
 VIRTUALMINBIN="/usr/sbin/virtualmin"
+FORCECMDARG="-x"
 
 POSTFIXDOMAIN="domain.tld"
 POSTFIXCERTFILE="/etc/postfix/domain-fullchain.pem"

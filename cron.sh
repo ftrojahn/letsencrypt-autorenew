@@ -23,6 +23,7 @@ fi
 
 if [ "$1" = "force" ] ; then
  FORCE=true
+ FORCEARG=$FORCECMDARG
  shift
  if [ -z $@ ] ; then
    echo Force - only for single domains ...
@@ -30,6 +31,7 @@ if [ "$1" = "force" ] ; then
  fi
 else
  FORCE=false
+ FORCEARG=""
 fi
 
 if [ -n $@ ] ; then
@@ -151,7 +153,7 @@ for i in $VIRTUALHOSTS ; do
           VHOSTALTNAMES="$MAIN"
           for j in $CERTTOOL ; do
            if [ "$j" != "$MAIN" ] ; then
-             VHOSTALTNAMES="$DOMAINS $j"
+             VHOSTALTNAMES="$VHOSTALTNAMES $j"
            fi
           done
           if [ -n "$VHOSTALTNAMES" ] ; then
@@ -181,15 +183,10 @@ do
 CERT_FILE=${CERTS[$domain]};
 KEY_FILE=${KEYS[$domain]};
 
-	if [ ! -f $CERT_FILE ] ; then
-		echo "Certificate file for $domain does not exist: $CERT_FILE."
-		continue
-        fi
-	if [ ! -f $KEY_FILE ] ; then
-		echo "Key file for $domain does not exist: $KEY_FILE."
-		continue
-        fi
+	[ -f $CERT_FILE ] || echo "Certificate file for $domain does not exist: $CERT_FILE."
+	[ -f $KEY_FILE ] || echo "Key file for $domain does not exist: $KEY_FILE."
 
+      if [ -f $CERT_FILE ] && [ -f $KEY_FILE ] ; then
 	echo "Checking expiration date for $domain..."
 	exp=$(date -d "`openssl x509 -in $CERT_FILE -text -noout|grep "Not After"|cut -c 25-`" +%s)
 	datenow=$(date -d "now" +%s)
@@ -205,11 +202,14 @@ KEY_FILE=${KEYS[$domain]};
 			echo "Certificate $domain is self-signed: *left $days_exp days*"
 			echo "Trying to create new cert using Letsencrypt ..."
 			days_exp=1;
-		fi 
-  if [ "$days_exp" -gt "90" ] ; then
+		fi
+      else
+	days_exp=1;
+      fi 
+    if [ "$days_exp" -gt "90" ] ; then
 	echo "Certificate for $domain is not from Let's Encrypt: *left $days_exp days*"
  	continue
-  fi 
+    fi 
 
     WWWARG=""
     MYDOMAINS=${ALTNAMES[$domain]}
@@ -256,8 +256,9 @@ KEY_FILE=${KEYS[$domain]};
 		fi
 	else
 		#run command
-	        result=$(${LETSENCRYPT_cmd} ${WWWARG} ${LETSENCRYPT_options} )
+	        result=$(${LETSENCRYPT_cmd} ${FORCEARG} ${WWWARG} ${LETSENCRYPT_options} )
 		echo "${result}"
+
 	fi
   fi
 
@@ -270,8 +271,8 @@ KEY_FILE=${KEYS[$domain]};
   
   # copy files if needed
   if [ $days_exp2 -ge $days_exp ] \
-    && [ -n "$CERT_FILE" ] && [ -f "$CERT_FILE" ] && [ -L "$LETSENCRYPT_path/$domain/fullchain.pem" ] \
-    && [ -n "$KEY_FILE" ] && [ -f "$KEY_FILE" ] && [ -L "$LETSENCRYPT_path/$domain/privkey.pem" ] ; then
+    && [ -n "$CERT_FILE" ] && [ -L "$LETSENCRYPT_path/$domain/fullchain.pem" ] \
+    && [ -n "$KEY_FILE" ] && [ -L "$LETSENCRYPT_path/$domain/privkey.pem" ] ; then
   	cp -L $LETSENCRYPT_path/$domain/fullchain.pem $CERT_FILE 
   	cp -L $LETSENCRYPT_path/$domain/privkey.pem $KEY_FILE 
   	DORELOAD=true
