@@ -27,7 +27,18 @@ nano /PathToLetsencrypt/letsencrypt/cron.sh
 3) Don't forget to make it executable
 chmod +x /PathToLetsencrypt/letsencrypt/cron.sh
 
-4) Cron exemple: 15 Jan, 15 April, 15 July, 15 Oct 
+4) Cron example: 15 Jan, 15 April, 15 July, 15 Oct 
 
-"* * 15 4,7,10,1 * /PathToLetsencrypt/letsencrypt/cron.sh >> /PathToLetsencrypt/letsencrypt/cron.log"
+```
+* * 15 4,7,10,1 * /PathToLetsencrypt/letsencrypt/cron.sh >> /PathToLetsencrypt/letsencrypt/cron.log"
+```
 
+I run it weekly on every sunday morning per /etc/cron.d file like this, getting results per mail:
+
+```
+# /etc/cron.d/letsencrypt: crontab fragment for dehydrated/letsencrypt
+30 7     * * 7     root /PathToLetsencrypt/letsencrypt/cron.sh
+```
+
+The output has been optimized for ssh/console (using spinner and tput) and mail (*bold* text) for better readability.
+Certs with correct date show only one line with main domain and left days. Full logs are only shown if errors occur.
